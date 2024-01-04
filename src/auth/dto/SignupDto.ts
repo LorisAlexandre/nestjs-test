@@ -13,7 +13,7 @@ export class CreateUserSettingsDto {
   newsLetter: boolean;
 }
 
-export class CreateUserDto {
+export class SignupDto {
   @IsNotEmpty()
   @IsString()
   firstname: string;
