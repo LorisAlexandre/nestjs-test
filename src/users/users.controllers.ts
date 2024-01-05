@@ -12,10 +12,11 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/CreateUser.dto';
-import mongoose from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { UpdateUserDto } from './dto/UpdateUse.dto';
-import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { JwtGuard } from 'src/auth/guard';
+import { GetUser } from 'src/auth/decorator';
+import { User } from 'src/schemas/User.schema';
 
 @Controller('users')
 export class UsersController {
@@ -30,10 +31,13 @@ export class UsersController {
     return this.usersService.getUsers();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Get('me')
-  getMe(@Req() req: Request) {
-    return { user: req.user, result: true };
+  getMe(
+    @GetUser() //custom decorator
+    user: Model<User>, //user type: userModel
+  ) {
+    return { user, result: true };
   }
 
   @Get(':id')
