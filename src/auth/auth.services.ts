@@ -27,13 +27,21 @@ export class AuthService {
         ...signupDto,
         settings: savedNewSettings._id,
       });
-      return newUser.save();
+      const savedUser = await newUser.save();
+      const userId = savedUser._id.toString();
+      const access_token = await this.signToken(userId, savedUser.email);
+      return {
+        access_token,
+        result: true,
+      };
     }
 
     const newUser = new this.userModel(signupDto);
     const savedUser = await newUser.save();
+    const userId = savedUser._id.toString();
+    const access_token = await this.signToken(userId, savedUser.email);
     return {
-      access_token: this.signToken(savedUser._id, savedUser.email),
+      access_token,
       result: true,
     };
   }
@@ -45,14 +53,14 @@ export class AuthService {
     else if (findUser.password !== password)
       throw new HttpException('Email or Password wrong', 400);
     else {
+      const access_token = await this.signToken(findUser._id, findUser.email);
       return {
-        access_token: this.signToken(findUser._id, findUser.email),
+        access_token,
         result: true,
       };
     }
   }
 
-  // By knowlede limitations, I put type any
   signToken(userId: any, email: string): Promise<string> {
     const payload = {
       sub: userId,

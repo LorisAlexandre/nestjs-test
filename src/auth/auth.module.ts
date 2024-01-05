@@ -10,6 +10,7 @@ import {
   UserSettingsSchema,
 } from 'src/schemas/UserSettings.schema';
 import { ConfigModule } from '@nestjs/config';
+import { JwtStrategy } from './strategy';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { ConfigModule } from '@nestjs/config';
     ]),
     ConfigModule,
   ],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}
