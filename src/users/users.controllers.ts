@@ -11,9 +11,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/CreateUser.dto';
+import { CreateUserDto } from './dto';
 import mongoose, { Model } from 'mongoose';
-import { UpdateUserDto } from './dto/UpdateUse.dto';
+import { UpdateUserDto } from './dto/';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { User } from 'src/schemas/User.schema';
